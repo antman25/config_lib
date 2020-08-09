@@ -34,7 +34,8 @@ class EnvInfo(object):
         return self.getEnvOpt('feature2_flag')
 
     def __str__(self):
-        return "<EnvInfo> Name: %s Type: %s Cloud: %s Small: %s Feature1: %s Feature2: %s" % (self.getEnvName(), self.getEnvType(), self.getCloudFlag(), self.getSmallFlag(), self.getFeature1(), self.getFeature2())
+        #return "<EnvInfo> Name: %s Type: %s Cloud: %s Small: %s Feature1: %s Feature2: %s" % (self.getEnvName(), self.getEnvType(), self.getCloudFlag(), self.getSmallFlag(), self.getFeature1(), self.getFeature2())
+	    return repr(self)
 
     def __repr__(self):
         return "EnvInfo(env_name=%s, env_opts=%s)" % (self.getEnvName(), self.getAllEnvOpts())
