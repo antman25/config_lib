@@ -18,3 +18,10 @@ def get_config(config_path):
     except Exception:
         log.exception('I could not import your config from %s, please check the error below...' % config_fullpath)
         return None
+
+def combineOptions(*args):
+    result = {}
+    for a in args:
+        result.update(a)
+    log.debug("<combineOptions> Combined Result: %s" % str(result))
+    return result
