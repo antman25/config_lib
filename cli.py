@@ -18,32 +18,24 @@ def main():
 
     parser = argparse.ArgumentParser(description='The main entry point of the config builder.')
 
-    parser.add_argument('-c', '--config', default=None,
-                        help='Full path to your config')
+    parser.add_argument('-l', '--list', action='store_true', help='list all available backends')
 
-    mode_selection = parser.add_mutually_exclusive_group()
+    #mode_selection = parser.add_mutually_exclusive_group()
     #mode_selection.add_argument('-i', '--init',
     #                            nargs='?',
     #                            default=None,
     #                            const='.',
     #                            help='Init stuff')
-    mode_selection.add_argument('-l', '--list', nargs='?', help='list all available backends')
+    #mode_selection.add_argument('-l', '--list', nargs='?', help='list all available backends')
 
     args = vars(parser.parse_args())
+    print(args)
 
-    config_path = args['config']
-
-    # setup the environment to be able to import the config.py
-    if config_path:
-        # appends the current config in order to find config.py
-        sys.path.insert(0, path.dirname(path.abspath(config_path)))
-    else:
-        config_path = execution_dir + '/cfg/config_main.py'
-
-    config_main = util.get_config(config_path)  # will exit if load fails
-    
+    config_main = util.get_config(execution_dir + '/config_main.py')  # will exit if load fails
+    config_env = util.get_config(execution_dir + '/config_env.py')  # will exit if load fails
     
     if args['list']:
+        print("Test")
         log.info("Listing all Environments")
         for e in config_env.ENV_LIST_ALL:
             log.info(e)
