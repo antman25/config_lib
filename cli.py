@@ -3,7 +3,7 @@ import argparse
 import logging
 import os
 import sys
-from os import path, sep, getcwd, access, W_OK
+from os import path, sep, getcwd, access, W_OK, makedirs
 from pathlib import Path
 
 import logs
@@ -26,8 +26,27 @@ def main():
 
     config_main = util.get_config(execution_dir + '/config_main.py')
 
+    for cur_path in config_main.ALL_DIRS:
+        if not path.exists(cur_path):    
+            makedirs(cur_path, mode=0o755)
+
+    '''
     if not path.exists(config_main.LOG_DIR):
         makedirs(config_main.LOG_DIR, mode=0o755)
+
+    if not path.exists(config_main.CFG_DATA_DIR):
+        makedirs(config_main.CFG_DATA_DIR, mode=0o755)
+
+    if not path.exists(config_main.SCD_DATA_DIR):
+        makedirs(config_main.SCD_DATA_DIR, mode=0o755)
+
+    if not path.exists(config_main.BASELINE_DIR):
+        makedirs(config_main.BASELINE_DIR, mode=0o755)
+
+    if not path.exists(config_main.TESTING_DIR):
+        makedirs(config_main.TESTING_DIR, mode=0o755)
+    '''
+
 
     if hasattr(config_main, 'LOG_FORMATTER'):
         logs.format_logs(formatter=config_main.LOG_FORMATTER)
@@ -37,7 +56,7 @@ def main():
     if config_main.LOG_FILE:
         hdlr = logging.FileHandler(config_main.LOG_FILE)
         hdlr.setFormatter(logging.Formatter("%(asctime)s %(levelname)-8s %(name)-25s %(message)s"))
-        log.addHandler(hdlr)
+        root_logger.addHandler(hdlr)
 
     if args['verbose']:
         root_logger.setLevel(logging.DEBUG)
@@ -47,6 +66,16 @@ def main():
 
 
     config_env = util.get_config(execution_dir + '/config_env.py')
+    for e in config_env.ENV_LIST_ALL:
+        baseline_scd_dir = config_main.CFG_BASELINE_DIR + '/' + e.env_name
+        testing_scd_dir = config_main.CFG_TEST_DIR + '/' + e.env_name
+
+        if not path.exists(baseline_scd_dir):
+            makedirs(baseline_scd_dir, mode=0o755)
+        if not path.exists(testing_scd_dir):
+            makedirs(testing_scd_dir, mode=0o755)
+
+
     config_ports = util.get_config(execution_dir + '/config_ports.py')
     
     if args['list']:

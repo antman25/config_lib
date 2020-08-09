@@ -9,10 +9,10 @@ class BaseConfig(object):
     def __init__(self, config = {}):
         self._config = config
 
-    def __getattribute__(self, name):
+    #def __getattribute__(self, name):
     #    if name in self._config:
     #        return self._config[name]
-        return super(BaseConfig, self).__getattribute__(name)
+    #    return super(BaseConfig, self).__getattribute__(name)
 
     def __add__(self, other):
         r = copy.deepcopy(self._config)

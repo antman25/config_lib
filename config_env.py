@@ -40,14 +40,14 @@ CONFIG1_OPTS = combineOptions(ALL_DEFAULT_OPTS, all_features_on)
 CONFIG2_OPTS = combineOptions(ALL_DEFAULT_OPTS, small_env)
 CONFIG3_OPTS = combineOptions(ALL_DEFAULT_OPTS, small_cloud_env)
 
-ENV_LIST_A = [  EnvInfo(env_name='Env1-dev', **ALL_DEFAULT_OPTS),
-                EnvInfo(env_name='Env2-tst', **combineOptions(ALL_DEFAULT_OPTS, TST_ENV_TYPE_OPTS)),
-                EnvInfo(env_name='Env4-tst', **combineOptions(CONFIG1_OPTS, TST_ENV_TYPE_OPTS))
+ENV_LIST_A = [  EnvInfo(env_name='Env1', **ALL_DEFAULT_OPTS),
+                EnvInfo(env_name='Env2', **combineOptions(ALL_DEFAULT_OPTS, TST_ENV_TYPE_OPTS)),
+                EnvInfo(env_name='Env4', **combineOptions(CONFIG1_OPTS, TST_ENV_TYPE_OPTS))
             ]
 
-ENV_LIST_B = [ EnvInfo(env_name='Env3-ops', **combineOptions(ALL_DEFAULT_OPTS, OPS_ENV_TYPE_OPTS)) ]
+ENV_LIST_B = [ EnvInfo(env_name='Env3', **combineOptions(ALL_DEFAULT_OPTS, OPS_ENV_TYPE_OPTS)) ]
 
-ENV_LIST_C = [ EnvInfo(env_name='Env5-tst', **combineOptions(CONFIG2_OPTS, TST_ENV_TYPE_OPTS)),
-               EnvInfo(env_name='Env6-tst', **combineOptions(CONFIG3_OPTS, DEV_ENV_TYPE_OPTS)) ] 
+ENV_LIST_C = [ EnvInfo(env_name='Env5', **combineOptions(CONFIG2_OPTS, TST_ENV_TYPE_OPTS)),
+               EnvInfo(env_name='Env6', **combineOptions(CONFIG3_OPTS, DEV_ENV_TYPE_OPTS)) ] 
 
 ENV_LIST_ALL = ENV_LIST_A + ENV_LIST_B + ENV_LIST_C

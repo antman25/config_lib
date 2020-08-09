@@ -3,6 +3,7 @@ import importlib
 from os import path, makedirs
 import time
 import sys
+import json
 
 log = logging.getLogger(__name__)
 
@@ -13,13 +14,20 @@ def get_config(config_path):
         log.error('I cannot find the config file %s.' % config_fullpath)
         return None
     try:
-        p = path.splitext(path.basename(config_fullpath))[0]
-        log.info('Importing Config %s' % p)
-        config = __import__(p)
-        log.debug('Config check passed...')
-        log.debug('------ Dump of %s variables -------' % config_path)
-        print_config(p,config)
-        log.debug('------End Dump of %s variables -------' % config_path)
+        file_name, file_ext = path.splitext(path.basename(config_fullpath))
+        config = None
+        if file_ext == '.py':
+            log.info('Importing Config %s' % file_name)
+            config = __import__(file_name)
+            log.debug('Config check passed...')
+            log.debug('------ Dump of %s variables -------' % config_path)
+            print_config(file_name,config)
+            log.debug('------End Dump of %s variables -------' % config_path)
+        elif file_ext == '.conf':
+            pass
+        else:
+            log.exception('Unknown File Type for path %s - Ext = %s' % (config_fullpath,file_ext))  
+            sys.exit(-1)
         return config
     except Exception:
         log.exception('I could not import your config from %s, please check the error below...' % config_fullpath)
@@ -53,5 +61,4 @@ def print_config(config_name, config):
 
             #else:
             #    log.debug("[%s] %s = %s" % (config_name, att, type(val)))
-
 
