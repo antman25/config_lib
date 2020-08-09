@@ -46,8 +46,8 @@ def get_config(config_path):
         log.exception('I could not import your config from %s, please check the error below...' % config_fullpath)
         sys.exit(-1)
 
-def combineOptions(*args):
-    result = {}
+def combineAttributes(*args):
+    result = Config.AttributeDict()
     for a in args:
         result.update(a)
     #log.debug("<combineOptions> Combined Result: %s" % str(result))

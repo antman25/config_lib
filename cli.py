@@ -8,9 +8,21 @@ from pathlib import Path
 
 import logs
 import util
+from Config import AttributeDict
 from logs import root_logger
 
 log = logging.getLogger(__name__)
+
+def load_all_scd(config_main, config_env):
+    baseline = AttributeDict()
+    test = AttributeDict()
+    for env_name in config_env.ENV_LIST_ALL:
+        baseline_cfg_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
+        try:
+            baseline[env_name] = util.get_config(baseline_cfg_path)
+        except Exception as ex:
+            log.error("Could not load %s - Caught Exception %s" % (baseline_cfg_path, ex))
+    return baseline, test
 
 def main():
     logs.format_logs(theme_color='light')
@@ -20,6 +32,7 @@ def main():
     parser = argparse.ArgumentParser(description='The main entry point of the config builder.')
 
     parser.add_argument('-l', '--list', action='store_true', help='list all available backends')
+    parser.add_argument('-b', '--build', action='store_true', help='Build all configs')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable Verbose')
 
     args = vars(parser.parse_args())
@@ -48,9 +61,9 @@ def main():
 
 
     config_env = util.get_config(execution_dir + '/config_env.py')
-    for e in config_env.ENV_LIST_ALL:
-        baseline_scd_dir = config_main.SCD_BASELINE_DIR + '/' + e.env_name
-        testing_scd_dir = config_main.SCD_TEST_DIR + '/' + e.env_name
+    for env_name in config_env.ENV_LIST_ALL:
+        baseline_scd_dir = config_main.SCD_BASELINE_DIR + '/' + env_name
+        testing_scd_dir = config_main.SCD_TEST_DIR + '/' + env_name
 
         if not path.exists(baseline_scd_dir):
             makedirs(baseline_scd_dir, mode=0o755)
@@ -62,13 +75,21 @@ def main():
     
     if args['list']:
         log.info("Listing all Environments")
-        for e in config_env.ENV_LIST_ALL:
-            log.info(repr(e))
-            log.debug("Test %s" % e.env_name)
+        for env_name in config_env.ENV_LIST_ALL:
+            data = config_env.ENV_LIST_ALL[env_name]
+            log.info("EnvName: %s Env Attributes %s" % (env_name,str(data)))
 
-    env1_conf = util.get_config(config_main.CFG_BASELINE_DIR + '/Env1.conf')
-    log.debug("Raw Config: %s" % str(env1_conf))
-    log.debug("Env Name Test: %s" % env1_conf.env_name)
+    if args['build']:
+        log.info("Loading all Baseline and Test SCD Files")
+        baseline, testing = load_all_scd(config_main, config_env)
+        log.debug("Loaded Baseline: %s" % str(baseline))
+        log.debug("Loaded testing: %s" % str(baseline))
+    
+    
+    #env1_conf = util.get_config(config_main.CFG_BASELINE_DIR + '/Env1.conf')
+    #log.debug("Raw Config: %s" % str(env1_conf))
+    #log.debug("Env Name Test: %s" % env1_conf.env_name)
+    #log.debug("Env Hosts Test: %s" % env1_conf.hosts['Env1_host-AA-01'].short_name)
 
 
 if __name__ == "__main__":
