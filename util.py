@@ -12,7 +12,9 @@ def get_config(config_path):
         log.error('I cannot find the config file %s.' % config_fullpath)
         return None
     try:
-        config = __import__(path.splitext(path.basename(config_fullpath))[0])
+        p = path.splitext(path.basename(config_fullpath))[0]
+        log.debug('Importing Config %s' % p)
+        config = __import__(p)
         log.info('Config check passed...')
         log.debug('------ Dump of %s variables -------' % config_path)
         print_config(config_path,config)

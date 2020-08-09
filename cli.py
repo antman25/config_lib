@@ -22,11 +22,12 @@ def main():
                         help='Full path to your config')
 
     mode_selection = parser.add_mutually_exclusive_group()
-    mode_selection.add_argument('-i', '--init',
-                                nargs='?',
-                                default=None,
-                                const='.',
-                                help='Init stuff')
+    #mode_selection.add_argument('-i', '--init',
+    #                            nargs='?',
+    #                            default=None,
+    #                            const='.',
+    #                            help='Init stuff')
+    mode_selection.add_argument('-l', '--list', nargs='?', help='list all available backends')
 
     args = vars(parser.parse_args())
 
@@ -37,13 +38,16 @@ def main():
         # appends the current config in order to find config.py
         sys.path.insert(0, path.dirname(path.abspath(config_path)))
     else:
-        config_path = execution_dir + '/' + 'config_main.py'
+        config_path = execution_dir + '/cfg/config_main.py'
 
-    config = util.get_config(config_path)  # will exit if load fails
+    config_main = util.get_config(config_path)  # will exit if load fails
+    
+    
+    if args['list']:
+        log.info("Listing all Environments")
+        for e in config_env.ENV_LIST_ALL:
+            log.info(e)
 
-
-    if args['init']:
-        log.info("[INIT]")
 
 if __name__ == "__main__":
 
