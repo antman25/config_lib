@@ -1,4 +1,5 @@
 from util import combineOptions
+import Config
 
 APP1_DEFAULT_PORTS = { 'APP1_PORT1' : '7101',
 		       'APP1_PORT2' : '7102',
@@ -16,3 +17,6 @@ APP3_DEFAULT_PORTS = { 'APP3_PORT1' : '9001',
 		      }
 
 ALL_DEFAULT_PORTS = combineOptions(APP1_DEFAULT_PORTS, APP2_DEFAULT_PORTS, APP3_DEFAULT_PORTS)
+#ALL_PORT_TAGS = []
+#for port_name in ALL_DEFAULT_PORTS:
+#    ALL_PORT_TAGS.append(Config.PortTag(port_name, ALL_DEFAULT_PORTS[port_name] ))

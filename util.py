@@ -2,6 +2,7 @@ import logging
 import importlib
 from os import path, makedirs
 import time
+import sys
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ def get_config(config_path):
         return config
     except Exception:
         log.exception('I could not import your config from %s, please check the error below...' % config_fullpath)
-        return None
+        sys.exit(-1)
 
 def combineOptions(*args):
     result = {}

@@ -2,6 +2,13 @@ import logging
 
 log = logging.getLogger(__name__)
 
+class EnvList(object):
+    def __init__(self,env_list):
+        self._env_list = {}
+        #for 
+
+
+
 class EnvInfo(object):
     def __init__(self, env_name, **env_opts):
         self._env_name = env_name
@@ -11,6 +18,13 @@ class EnvInfo(object):
         if option_name in self._env_opts: 
             return self._env_opts[option_name]
         return None
+
+    def __getattribute__(self, name):
+        if name == 'env_name':
+            return self._env_name
+        #if name in self._env_opts:
+        #    return self._env_opts[name]
+        return super(EnvInfo, self).__getattribute__(name)
 
     def getEnvName(self):
         return self._env_name

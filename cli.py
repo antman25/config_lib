@@ -53,6 +53,7 @@ def main():
         log.info("Listing all Environments")
         for e in config_env.ENV_LIST_ALL:
             log.info(repr(e))
+            log.debug("Test %s" % e.env_name)
 
 
 if __name__ == "__main__":
