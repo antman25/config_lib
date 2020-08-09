@@ -24,7 +24,7 @@ FEATURE1_KEY = 'feature1_flag'
 FEATURE2_KEY = 'feature2_flag'
 
 DEFAULT_FEATURES_OPTS = {   FEATURE1_KEY : False,
-		                    FEATURE2_KEY : False  }
+	                    FEATURE2_KEY : False  }
 
 ALL_DEFAULT_OPTS = combineOptions(DEFAULT_ENV_TYPE_OPT, DEFAULT_CLOUD_FLAG_OPT, DEFAULT_SMALL_FLAG_OPT, DEFAULT_FEATURES_OPTS)
 
