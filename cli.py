@@ -17,11 +17,36 @@ def load_all_scd(config_main, config_env):
     baseline = AttributeDict()
     test = AttributeDict()
     for env_name in config_env.ENV_LIST_ALL:
-        baseline_cfg_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
+        baseline_cfg_path = config_main.SCD_BASELINE_DIR + '/' + env_name + '/' 'data.json'
+        test_cfg_path = config_main.SCD_TEST_DIR + '/' + env_name + '/' 'data.json'
         try:
             baseline[env_name] = util.get_config(baseline_cfg_path)
         except Exception as ex:
             log.error("Could not load %s - Caught Exception %s" % (baseline_cfg_path, ex))
+
+        try:
+            test[env_name] = util.get_config(test_cfg_path)
+        except Exception as ex:
+            log.error("Could not load %s - Caught Exception %s" % (test_cfg_path, ex))
+
+    return baseline, test
+
+def load_all_cfg(config_main,config_env):
+    baseline = AttributeDict()
+    test = AttributeDict()
+    for env_name in config_env.ENV_LIST_ALL:
+        baseline_cfg_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
+        test_cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
+        
+        try:
+            baseline[env_name] = util.get_config(baseline_cfg_path)
+        except Exception as ex:
+            log.error("Could not load %s - Caught Exception %s" % (baseline_cfg_path, ex))
+
+        try:
+            test[env_name] = util.get_config(test_cfg_path)
+        except Exception as ex:
+            log.error("Could not load %s - Caught Exception %s" % (test_cfg_path, ex))
     return baseline, test
 
 def main():
@@ -81,9 +106,12 @@ def main():
 
     if args['build']:
         log.info("Loading all Baseline and Test SCD Files")
-        baseline, testing = load_all_scd(config_main, config_env)
-        log.debug("Loaded Baseline: %s" % str(baseline))
-        log.debug("Loaded testing: %s" % str(baseline))
+        scd_baseline, scd_test = load_all_scd(config_main, config_env)
+        cfg_baseline, cfg_test = load_all_cfg(config_main, config_env)
+        log.debug("Loaded SCD Baseline: %s" % str(scd_baseline))
+        log.debug("Loaded SCD Test: %s" % str(scd_test))
+        log.debug("Loaded CFG Baseline: %s" % str(cfg_baseline))
+        log.debug("Loaded CFG Test: %s" % str(cfg_test))
     
     
     #env1_conf = util.get_config(config_main.CFG_BASELINE_DIR + '/Env1.conf')
