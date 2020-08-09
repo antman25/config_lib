@@ -4,8 +4,18 @@ from os import path, makedirs
 import time
 import sys
 import json
+import Config
 
 log = logging.getLogger(__name__)
+
+def dict_raise_on_duplicates(ordered_pairs):
+    d = Config.AttributeDict()
+    for k, v in ordered_pairs:
+        if k in d:
+           raise ValueError("duplicate key: %r" % (k,))
+        else:
+           d[k] = v
+    return d
 
 def get_config(config_path):
     log.info ('Loading: %s' % config_path)
@@ -24,7 +34,10 @@ def get_config(config_path):
             print_config(file_name,config)
             log.debug('------End Dump of %s variables -------' % config_path)
         elif file_ext == '.conf':
-            pass
+            f = open(config_fullpath)
+            d = f.read()
+            f.close()
+            return json.loads(d, object_pairs_hook=dict_raise_on_duplicates)
         else:
             log.exception('Unknown File Type for path %s - Ext = %s' % (config_fullpath,file_ext))  
             sys.exit(-1)

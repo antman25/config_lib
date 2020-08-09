@@ -30,24 +30,6 @@ def main():
         if not path.exists(cur_path):    
             makedirs(cur_path, mode=0o755)
 
-    '''
-    if not path.exists(config_main.LOG_DIR):
-        makedirs(config_main.LOG_DIR, mode=0o755)
-
-    if not path.exists(config_main.CFG_DATA_DIR):
-        makedirs(config_main.CFG_DATA_DIR, mode=0o755)
-
-    if not path.exists(config_main.SCD_DATA_DIR):
-        makedirs(config_main.SCD_DATA_DIR, mode=0o755)
-
-    if not path.exists(config_main.BASELINE_DIR):
-        makedirs(config_main.BASELINE_DIR, mode=0o755)
-
-    if not path.exists(config_main.TESTING_DIR):
-        makedirs(config_main.TESTING_DIR, mode=0o755)
-    '''
-
-
     if hasattr(config_main, 'LOG_FORMATTER'):
         logs.format_logs(formatter=config_main.LOG_FORMATTER)
     else:
@@ -67,8 +49,8 @@ def main():
 
     config_env = util.get_config(execution_dir + '/config_env.py')
     for e in config_env.ENV_LIST_ALL:
-        baseline_scd_dir = config_main.CFG_BASELINE_DIR + '/' + e.env_name
-        testing_scd_dir = config_main.CFG_TEST_DIR + '/' + e.env_name
+        baseline_scd_dir = config_main.SCD_BASELINE_DIR + '/' + e.env_name
+        testing_scd_dir = config_main.SCD_TEST_DIR + '/' + e.env_name
 
         if not path.exists(baseline_scd_dir):
             makedirs(baseline_scd_dir, mode=0o755)
@@ -83,6 +65,10 @@ def main():
         for e in config_env.ENV_LIST_ALL:
             log.info(repr(e))
             log.debug("Test %s" % e.env_name)
+
+    env1_conf = util.get_config(config_main.CFG_BASELINE_DIR + '/Env1.conf')
+    log.debug("Raw Config: %s" % str(env1_conf))
+    log.debug("Env Name Test: %s" % env1_conf.env_name)
 
 
 if __name__ == "__main__":
