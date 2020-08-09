@@ -1,4 +1,5 @@
 import logging
+
 log = logging.getLogger(__name__)
 
 class EnvInfo(object):
@@ -13,6 +14,9 @@ class EnvInfo(object):
 
     def getEnvName(self):
         return self._env_name
+
+    def getAllEnvOpts(self):
+        return self._env_opts
 
     def getEnvType(self):
         return self.getEnvOpt('env_type')
@@ -31,4 +35,7 @@ class EnvInfo(object):
 
     def __str__(self):
         return "<EnvInfo> Name: %s Type: %s Cloud: %s Small: %s Feature1: %s Feature2: %s" % (self.getEnvName(), self.getEnvType(), self.getCloudFlag(), self.getSmallFlag(), self.getFeature1(), self.getFeature2())
+
+    def __repr__(self):
+        return "EnvInfo(env_name=%s, env_opts=%s)" % (self.getEnvName(), self.getAllEnvOpts())
     

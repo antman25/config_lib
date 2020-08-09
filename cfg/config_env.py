@@ -1,19 +1,5 @@
-import logging
 from env_info import EnvInfo
 from util import combineOptions
-import time
-
-CURRENT_TIME = time.strftime("%Y%m%d-%H%M%S")
-
-DATA_DIR = '.'
-
-LOG_DIR = DATA_DIR + '/logs'
-LOG_FILE = LOG_DIR + '/output_' + CURRENT_TIME + '.log'
-
-LOG_LEVEL = logging.DEBUG
-
-#LOG_FORMATTER = logging.Formatter("%(asctime)s %(levelname)-8s %(name)-25s %(message)s")
-TEXT_COLOR_THEME = 'light'
 
 ENV_TYPE_KEY = 'env_type'
 ENV_TYPE_DEV_VALUE = 'dev'
@@ -54,14 +40,14 @@ CONFIG1_OPTS = combineOptions(ALL_DEFAULT_OPTS, all_features_on)
 CONFIG2_OPTS = combineOptions(ALL_DEFAULT_OPTS, small_env)
 CONFIG3_OPTS = combineOptions(ALL_DEFAULT_OPTS, small_cloud_env)
 
-ENV_LIST_A = [  EnvInfo(env_name='Env1-dev-C[f]-S[f]-1[f]-2[f]', **ALL_DEFAULT_OPTS),
-                EnvInfo(env_name='Env2-tst-C[f]-S[f]-1[f]-2[f]', **combineOptions(ALL_DEFAULT_OPTS, TST_ENV_TYPE_OPTS)),
-                EnvInfo(env_name='Env4-tst-C[f]-S[f]-1[t]-2[t]', **combineOptions(CONFIG1_OPTS, TST_ENV_TYPE_OPTS))
+ENV_LIST_A = [  EnvInfo(env_name='Env1-dev', **ALL_DEFAULT_OPTS),
+                EnvInfo(env_name='Env2-tst', **combineOptions(ALL_DEFAULT_OPTS, TST_ENV_TYPE_OPTS)),
+                EnvInfo(env_name='Env4-tst', **combineOptions(CONFIG1_OPTS, TST_ENV_TYPE_OPTS))
             ]
 
-ENV_LIST_B = [ EnvInfo(env_name='Env3-ops-C[f]-S[f]-1[f]-2[f]', **combineOptions(ALL_DEFAULT_OPTS, OPS_ENV_TYPE_OPTS)) ]
+ENV_LIST_B = [ EnvInfo(env_name='Env3-ops', **combineOptions(ALL_DEFAULT_OPTS, OPS_ENV_TYPE_OPTS)) ]
 
-ENV_LIST_C = [ EnvInfo(env_name='Env5-tst-C[f]-S[t]-1[f]-2[f]', **combineOptions(CONFIG2_OPTS, TST_ENV_TYPE_OPTS)),
-               EnvInfo(env_name='Env6-tst-C[f]-S[t]-1[f]-2[f]', **combineOptions(CONFIG3_OPTS, DEV_ENV_TYPE_OPTS)) ] 
+ENV_LIST_C = [ EnvInfo(env_name='Env5-tst', **combineOptions(CONFIG2_OPTS, TST_ENV_TYPE_OPTS)),
+               EnvInfo(env_name='Env6-tst', **combineOptions(CONFIG3_OPTS, DEV_ENV_TYPE_OPTS)) ] 
 
 ENV_LIST_ALL = ENV_LIST_A + ENV_LIST_B + ENV_LIST_C

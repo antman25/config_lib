@@ -14,25 +14,28 @@ HERE = path.dirname(path.abspath(__file__))
 
 def main():
     logs.format_logs()
-    config = util.get_config('config_main.py')
+    config_main = util.get_config('config_main.py')
 
-    if not path.exists(config.LOG_DIR):
-        makedirs(config.LOG_DIR, mode=0o755)
+    if not path.exists(config_main.LOG_DIR):
+        makedirs(config_main.LOG_DIR, mode=0o755)
 
-    if hasattr(config, 'LOG_FORMATTER'):
-        logs.format_logs(formatter=config.LOG_FORMATTER)
+    if hasattr(config_main, 'LOG_FORMATTER'):
+        logs.format_logs(formatter=config_main.LOG_FORMATTER)
     else:
-        logs.format_logs(theme_color=config.TEXT_COLOR_THEME)
+        logs.format_logs(theme_color=config_main.TEXT_COLOR_THEME)
 
-    if config.LOG_FILE:
-        hdlr = logging.FileHandler(config.LOG_FILE)
+    if config_main.LOG_FILE:
+        hdlr = logging.FileHandler(config_main.LOG_FILE)
         hdlr.setFormatter(logging.Formatter("%(asctime)s %(levelname)-8s %(name)-25s %(message)s"))
         log.addHandler(hdlr)
 
-    root_logger.setLevel(config.LOG_LEVEL)
-  
-    for e in config.ENV_LIST_ALL:
-        log.debug(str(e))
+    root_logger.setLevel(config_main.LOG_LEVEL)
+
+    config_env = util.get_config('config_env.py')
+    
+   
+    for e in config_env.ENV_LIST_ALL:
+        log.debug(e)
         log.info("Building Environment: %s" % e.getEnvName())
 
         
