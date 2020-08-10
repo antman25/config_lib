@@ -3,35 +3,43 @@
     "hosts": [
         {
             "hostname": "env2_linux_aa_01",
-            "ip": "10.2.0.01"
+            "ip": "10.2.0.01",
+            "os": "linux"
         },
         {
             "hostname": "env2_linux_aa_02",
-            "ip": "10.2.0.02"
+            "ip": "10.2.0.02",
+            "os": "linux"
         },
         {
             "hostname": "env2_linux_bb_01",
-            "ip": "10.2.0.03"
+            "ip": "10.2.0.03",
+            "os": "linux"
         },
         {
             "hostname": "env2_linux_bb_02",
-            "ip": "10.2.0.04"
+            "ip": "10.2.0.04",
+            "os": "linux"
         },
         {
             "hostname": "env2_linux_cc_01",
-            "ip": "10.2.0.05"
+            "ip": "10.2.0.05",
+            "os": "linux"
         },
         {
             "hostname": "env2_win_dd_01",
-            "ip": "10.2.0.06"
+            "ip": "10.2.0.06",
+            "os": "windows"
         },
         {
             "hostname": "env2_win_ee_01",
-            "ip": "10.2.0.07"
+            "ip": "10.2.0.07",
+            "os": "windows"
         },
         {
             "hostname": "env2_win_ff_01",
-            "ip": "10.2.0.08"
+            "ip": "10.2.0.08",
+            "os": "windows"
         }
     ]
 }

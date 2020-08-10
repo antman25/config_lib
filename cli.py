@@ -122,10 +122,12 @@ def main():
         for env_name in config_env.ENV_LIST_ALL:
             env_opts = config_env.ENV_LIST_ALL[env_name]
             c = build_env.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)
-            util.save_config(config_main.CFG_TEST_DIR + '/' + env_name + '.conf', c)
             log.debug("Generated config %s" % str(c))
-            log.debug("Config Test env_name %s" % c.env_name)
-            log.debug("Config Test artifactory %s" % c.artifactory)
+            cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
+            util.save_config(cfg_path, c)
+            log.debug("Saving Config" % cfg_path)
+#            log.debug("Config Test env_name %s" % c.env_name)
+#            log.debug("Config Test artifactory %s" % c.artifactory)
 
     if args['report']:
         report.generate_report()
@@ -139,10 +141,18 @@ def main():
             util.save_config(config_main.SCD_TEST_DIR + '/' + env_name + '/data.json', fake_scd)
 
     if args['promote']:
-        log.info("Promoting Test SCD files to baseline")
+        log.info("Promoting Test files to baseline")
         for env_name in config_env.ENV_LIST_ALL:
             src_path = config_main.SCD_TEST_DIR + '/' + env_name + '/data.json'
             dest_path = config_main.SCD_BASELINE_DIR + '/' + env_name + '/data.json'
+            log.debug("Copying file from %s to %s" % (src_path, dest_path))
+            try:
+                copyfile(src_path, dest_path)
+            except:
+                log.error("Failure promoting SCD files")
+
+            src_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
+            dest_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
             log.debug("Copying file from %s to %s" % (src_path, dest_path))
             try:
                 copyfile(src_path, dest_path)

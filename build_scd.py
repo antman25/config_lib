@@ -17,7 +17,8 @@ def buildFakeSCD(env_name, ip_start):
         for i in range(linux_host_types[host_type]):
             host_name = env_name.lower() + '_' + host_type + '_'+ "{:02d}".format(i+1)
             result['hosts'].append({ 'hostname' : host_name,
-                                     'ip' :  '10.' + str(ip_start) + '.0.' + "{:02d}".format(cur_ip)
+                                     'ip' :  '10.' + str(ip_start) + '.0.' + "{:02d}".format(cur_ip),
+                                     'os' : 'linux'
                                     })
             cur_ip += 1
 
@@ -26,7 +27,8 @@ def buildFakeSCD(env_name, ip_start):
         for i in range(windows_host_types[host_type]):
             host_name = env_name.lower() + '_' + host_type + '_'+ "{:02d}".format(i+1)
             result['hosts'].append({ 'hostname' : host_name,
-                                     'ip' :  '10.' + str(ip_start) + '.0.' + "{:02d}".format(cur_ip)
+                                     'ip' :  '10.' + str(ip_start) + '.0.' + "{:02d}".format(cur_ip),
+                                     'os' : 'windows'
                                     })
             cur_ip += 1
 
