@@ -33,7 +33,14 @@ def buildArtifactoryConnection(env_name, scd, config_main, config_env, **env_opt
              'port' : port
             }
 
-
+def buildHostGroup(scd, host_type):
+    result = []
+    for cur_host in scd.hosts:
+        if cur_host.os == host_type:
+            h = HostName(cur_host.hostname)
+            if h.host_type not in result:
+                result.append(h.host_type)
+    return result            
 
 def buildHost(scd, host_type):
     result = []
@@ -45,11 +52,13 @@ def buildHost(scd, host_type):
 
 def buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts):
     result = AttributeDict()
+    result['host_groups'] = buildHostGroup(scd,'windows')
     result['hosts'] = buildHost(scd, 'windows')
     return result
 
 def buildLinuxConfig(env_name, scd, config_main, config_env, **env_opts):
     result = AttributeDict()
+    result['host_groups'] = buildHostGroup(scd,'linux')
     result['hosts'] = buildHost(scd, 'linux')
     return result
 
