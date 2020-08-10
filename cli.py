@@ -8,14 +8,15 @@ from pathlib import Path
 
 import logs
 import util
-from Config import AttributeDict
+import Config
+
 from logs import root_logger
 
 log = logging.getLogger(__name__)
 
 def load_all_scd(config_main, config_env):
-    baseline = AttributeDict()
-    test = AttributeDict()
+    baseline = Config.AttributeDict()
+    test = Config.AttributeDict()
     for env_name in config_env.ENV_LIST_ALL:
         baseline_cfg_path = config_main.SCD_BASELINE_DIR + '/' + env_name + '/' 'data.json'
         test_cfg_path = config_main.SCD_TEST_DIR + '/' + env_name + '/' 'data.json'
@@ -32,8 +33,8 @@ def load_all_scd(config_main, config_env):
     return baseline, test
 
 def load_all_cfg(config_main,config_env):
-    baseline = AttributeDict()
-    test = AttributeDict()
+    baseline = Config.AttributeDict()
+    test = Config.AttributeDict()
     for env_name in config_env.ENV_LIST_ALL:
         baseline_cfg_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
         test_cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
@@ -107,18 +108,22 @@ def main():
     if args['build']:
         log.info("Loading all Baseline and Test SCD Files")
         scd_baseline, scd_test = load_all_scd(config_main, config_env)
-        cfg_baseline, cfg_test = load_all_cfg(config_main, config_env)
         log.debug("Loaded SCD Baseline: %s" % str(scd_baseline))
         log.debug("Loaded SCD Test: %s" % str(scd_test))
-        log.debug("Loaded CFG Baseline: %s" % str(cfg_baseline))
-        log.debug("Loaded CFG Test: %s" % str(cfg_test))
-    
-    
-    #env1_conf = util.get_config(config_main.CFG_BASELINE_DIR + '/Env1.conf')
-    #log.debug("Raw Config: %s" % str(env1_conf))
-    #log.debug("Env Name Test: %s" % env1_conf.env_name)
-    #log.debug("Env Hosts Test: %s" % env1_conf.hosts['Env1_host-AA-01'].short_name)
 
+        for env_name in config_env.ENV_LIST_ALL:
+            env_opts = config_env.ENV_LIST_ALL[env_name]
+            c = Config.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)
+            log.debug("Generated Config %s" % str(c))
+            util.save_config(config_main.CFG_TEST_DIR + '/' + env_name + '.conf', c)
+            
+
+        #log.info("Loading all Baseline and Test CFG Files")
+        #cfg_baseline, cfg_test = load_all_cfg(config_main, config_env)
+        #log.debug("Loaded CFG Baseline: %s" % str(cfg_baseline))
+        #log.debug("Loaded CFG Test: %s" % str(cfg_test))
+
+        
 
 if __name__ == "__main__":
 

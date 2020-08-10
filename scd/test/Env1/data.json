@@ -1,0 +1,14 @@
+{
+    "env_name" : "Env1",
+    "hosts" : [
+                { "hostname" : "Env1_host-aa-01",
+                    "ip" : "10.2.0.1"
+                },
+                { "hostname" : "Env1_host-aa-02",
+                    "ip" : "10.2.0.2"
+                },
+                { "hostname" : "Env1_host-ab-01",
+                    "ip" : "10.2.0.3"
+                }
+              ]
+}

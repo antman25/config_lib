@@ -28,4 +28,5 @@ LOG_LEVEL = logging.INFO
 #LOG_FORMATTER = logging.Formatter("%(asctime)s %(levelname)-8s %(name)-25s %(message)s")
 TEXT_COLOR_THEME = 'light'
 
-
+ARTIFACTORY_HOST = "10.0.0.190"
+ARTIFACTORY_PORT = "8443"

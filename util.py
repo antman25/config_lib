@@ -17,6 +17,14 @@ def dict_raise_on_duplicates(ordered_pairs):
            d[k] = v
     return d
 
+def save_config(config_path, output):
+    f = open(config_path, "w")
+    j = json.dumps(output,indent=4, sort_keys=True)
+    #print (j)
+    f.write(j)
+    f.close()
+    
+
 def get_config(config_path):
     log.info ('Loading: %s' % config_path)
     config_fullpath = config_path
@@ -33,7 +41,7 @@ def get_config(config_path):
             log.debug('------ Dump of %s variables -------' % config_path)
             print_config(file_name,config)
             log.debug('------End Dump of %s variables -------' % config_path)
-        elif file_ext == '.conf':
+        elif file_ext in ['.conf', '.json']:
             f = open(config_fullpath)
             d = f.read()
             f.close()
