@@ -5,12 +5,14 @@ import os
 import sys
 from os import path, sep, getcwd, access, W_OK, makedirs
 from pathlib import Path
+from shutil import copyfile
+
 
 import logs
 import util
 import report
 import build_env
-
+import build_scd
 
 from logs import root_logger
 from AttributeDict import AttributeDict
@@ -64,6 +66,8 @@ def main():
     parser.add_argument('-b', '--build', action='store_true', help='Build all configs')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable Verbose')
     parser.add_argument('-r', '--report', action='store_true', help='Generate Report')
+    parser.add_argument('-f', '--fake', action='store_true', help='Generate Fake SCD')
+    parser.add_argument('-p', '--promote', action='store_true', help='Copy test to baseline')
 
     args = vars(parser.parse_args())
 
@@ -126,6 +130,24 @@ def main():
     if args['report']:
         report.generate_report()
             
+    if args['fake']:
+        log.info("Building Fake SCD files")
+        i = 0
+        for env_name in config_env.ENV_LIST_ALL:
+            fake_scd = build_scd.buildFakeSCD(env_name, i)
+            i = i + 2
+            util.save_config(config_main.SCD_TEST_DIR + '/' + env_name + '/data.json', fake_scd)
+
+    if args['promote']:
+        log.info("Promoting Test SCD files to baseline")
+        for env_name in config_env.ENV_LIST_ALL:
+            src_path = config_main.SCD_TEST_DIR + '/' + env_name + '/data.json'
+            dest_path = config_main.SCD_BASELINE_DIR + '/' + env_name + '/data.json'
+            log.debug("Copying file from %s to %s" % (src_path, dest_path))
+            try:
+                copyfile(src_path, dest_path)
+            except:
+                log.error("Failure promoting SCD files")
 
         #log.info("Loading all Baseline and Test CFG Files")
         #cfg_baseline, cfg_test = load_all_cfg(config_main, config_env)

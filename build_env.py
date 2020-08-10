@@ -13,7 +13,8 @@ def buildArtifactoryConnection(env_name, scd, config_main, config_env, **env_opt
             }
 
 def buildHost(scd, host_type):
-            
+    result = AttributeDict()
+    return result        
 
 def buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts):
     result = AttributeDict()
