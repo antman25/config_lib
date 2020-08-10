@@ -10,7 +10,20 @@ def buildArtifactoryConnection(env_name, scd, config_main, config_env, **env_opt
         port = "8444"
     return { 'host' : host,
              'port' : port
-            }        
+            }
+
+def buildHost(scd, host_type):
+            
+
+def buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts):
+    result = AttributeDict()
+    result['hosts'] = buildHost('windows')
+    return result
+
+def buildLinuxConfig(env_name, scd, config_main, config_env, **env_opts):
+    result = AttributeDict()
+    result['hosts'] = buildHost('linux')
+    return result
 
 def buildEnvConfig(env_name, scd, config_main, config_env, **env_opts):
     result = AttributeDict()
@@ -18,4 +31,6 @@ def buildEnvConfig(env_name, scd, config_main, config_env, **env_opts):
 
     result['artifactory'] = buildArtifactoryConnection(env_name, scd, config_main, config_env, **env_opts)
     
+    result['linux'] = buildLinuxConfig(env_name, scd, config_main, config_env, **env_opts)
+    result['windows'] = buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts)
     return result
