@@ -4,12 +4,12 @@ from os import path, makedirs
 import time
 import sys
 import json
-import Config
+from AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)
 
 def dict_raise_on_duplicates(ordered_pairs):
-    d = Config.AttributeDict()
+    d = AttributeDict()
     for k, v in ordered_pairs:
         if k in d:
            raise ValueError("duplicate key: %r" % (k,))
@@ -35,9 +35,9 @@ def get_config(config_path):
         file_name, file_ext = path.splitext(path.basename(config_fullpath))
         config = None
         if file_ext == '.py':
-            log.info('Importing Config %s' % file_name)
+            log.info('Importing config %s' % file_name)
             config = __import__(file_name)
-            log.debug('Config check passed...')
+            log.debug('config check passed...')
             log.debug('------ Dump of %s variables -------' % config_path)
             print_config(file_name,config)
             log.debug('------End Dump of %s variables -------' % config_path)
@@ -55,7 +55,7 @@ def get_config(config_path):
         sys.exit(-1)
 
 def combineAttributes(*args):
-    result = Config.AttributeDict()
+    result = AttributeDict()
     for a in args:
         result.update(a)
     #log.debug("<combineOptions> Combined Result: %s" % str(result))

@@ -1,13 +1,7 @@
 import logging
-#import copy
-
+from AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)
-
-class AttributeDict(dict):
-    __slots__ = () 
-    __getattr__ = dict.__getitem__
-    __setattr__ = dict.__setitem__
 
 def buildArtifactoryConnection(env_name, scd, config_main, config_env, **env_opts):
     host = config_main.ARTIFACTORY_HOST

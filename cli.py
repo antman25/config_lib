@@ -8,15 +8,18 @@ from pathlib import Path
 
 import logs
 import util
-import Config
+import report
+import build_env
+
 
 from logs import root_logger
+from AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)
 
 def load_all_scd(config_main, config_env):
-    baseline = Config.AttributeDict()
-    test = Config.AttributeDict()
+    baseline = AttributeDict()
+    test = AttributeDict()
     for env_name in config_env.ENV_LIST_ALL:
         baseline_cfg_path = config_main.SCD_BASELINE_DIR + '/' + env_name + '/' 'data.json'
         test_cfg_path = config_main.SCD_TEST_DIR + '/' + env_name + '/' 'data.json'
@@ -33,8 +36,8 @@ def load_all_scd(config_main, config_env):
     return baseline, test
 
 def load_all_cfg(config_main,config_env):
-    baseline = Config.AttributeDict()
-    test = Config.AttributeDict()
+    baseline = AttributeDict()
+    test = AttributeDict()
     for env_name in config_env.ENV_LIST_ALL:
         baseline_cfg_path = config_main.CFG_BASELINE_DIR + '/' + env_name + '.conf'
         test_cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
@@ -60,6 +63,7 @@ def main():
     parser.add_argument('-l', '--list', action='store_true', help='list all available backends')
     parser.add_argument('-b', '--build', action='store_true', help='Build all configs')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable Verbose')
+    parser.add_argument('-r', '--report', action='store_true', help='Generate Report')
 
     args = vars(parser.parse_args())
 
@@ -108,14 +112,17 @@ def main():
     if args['build']:
         log.info("Loading all Baseline and Test SCD Files")
         scd_baseline, scd_test = load_all_scd(config_main, config_env)
-        log.debug("Loaded SCD Baseline: %s" % str(scd_baseline))
-        log.debug("Loaded SCD Test: %s" % str(scd_test))
+        #log.debug("Loaded SCD Baseline: %s" % str(scd_baseline))
+        #log.debug("Loaded SCD Test: %s" % str(scd_test))
 
         for env_name in config_env.ENV_LIST_ALL:
             env_opts = config_env.ENV_LIST_ALL[env_name]
-            c = Config.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)
-            log.debug("Generated Config %s" % str(c))
+            c = build_env.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)
+            log.debug("Generated config %s" % str(c))
             util.save_config(config_main.CFG_TEST_DIR + '/' + env_name + '.conf', c)
+
+    if args['report']:
+        report.generate_report()
             
 
         #log.info("Loading all Baseline and Test CFG Files")
