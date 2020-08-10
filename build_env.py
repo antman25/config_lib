@@ -40,7 +40,7 @@ def buildHostGroup(scd, host_type):
             h = HostName(cur_host.hostname)
             if h.host_type not in result:
                 result.append(h.host_type)
-    return result            
+    return result
 
 def buildHost(scd, host_type):
     result = []
