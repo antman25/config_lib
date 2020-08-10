@@ -125,7 +125,7 @@ def main():
             log.debug("Generated config %s" % str(c))
             cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
             util.save_config(cfg_path, c)
-            log.debug("Saving Config" % cfg_path)
+            #log.debug("Saving Config" % cfg_path)
 #            log.debug("Config Test env_name %s" % c.env_name)
 #            log.debug("Config Test artifactory %s" % c.artifactory)
 
