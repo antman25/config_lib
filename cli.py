@@ -73,7 +73,7 @@ def main():
 
     config_main = util.get_config(execution_dir + '/config_main.py')
 
-    for cur_path in config_main.ALL_DIRS:
+    for cur_path in config_main.BUILD_DIRS:
         if not path.exists(cur_path):    
             makedirs(cur_path, mode=0o755)
 
@@ -122,7 +122,7 @@ def main():
         for env_name in config_env.ENV_LIST_ALL:
             env_opts = config_env.ENV_LIST_ALL[env_name]
             c = build_env.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)
-            log.debug("Generated config %s" % str(c))
+            #log.debug("Generated config %s" % str(c))
             cfg_path = config_main.CFG_TEST_DIR + '/' + env_name + '.conf'
             util.save_config(cfg_path, c)
             #log.debug("Saving Config" % cfg_path)
@@ -130,7 +130,8 @@ def main():
 #            log.debug("Config Test artifactory %s" % c.artifactory)
 
     if args['report']:
-        report.generate_report()
+        cfg_baseline, cfg_test = load_all_cfg(config_main, config_env)
+        report.generate_report(cfg_baseline, cfg_test)
             
     if args['fake']:
         log.info("Building Fake SCD files")

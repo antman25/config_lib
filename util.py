@@ -8,7 +8,7 @@ from AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)
 
-def dict_raise_on_duplicates(ordered_pairs):
+def config_hook(ordered_pairs):
     d = AttributeDict()
     for k, v in ordered_pairs:
         if k in d:
@@ -19,7 +19,7 @@ def dict_raise_on_duplicates(ordered_pairs):
 
 def save_config(config_path, output):
     f = open(config_path, "w")
-    j = json.dumps(output,indent=4, sort_keys=True)
+    j = json.dumps(output,indent=2, sort_keys=True)
     #print (j)
     f.write(j)
     f.close()
@@ -45,7 +45,7 @@ def get_config(config_path):
             f = open(config_fullpath)
             d = f.read()
             f.close()
-            return json.loads(d, object_pairs_hook=dict_raise_on_duplicates)
+            return json.loads(d, object_pairs_hook=config_hook)
         else:
             log.exception('Unknown File Type for path %s - Ext = %s' % (config_fullpath,file_ext))  
             sys.exit(-1)
