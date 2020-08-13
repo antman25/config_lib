@@ -1,0 +1,25 @@
+{ "path": "/content/geometrixx/my-first-jinja-page",
+  "properties": [
+    { "name": "jcr:primaryType",
+      "value": "cq:Page" }],
+    
+  "nodes": [
+    { "path": "jcr:content",
+      "properties": [
+        { "name": "jcr:primaryType",
+          "value": "cq:PageContent"},
+        { "name": "sling:resourceType",
+          "value": "geometrixx/components/widepage"},
+        { "name": "jcr:title",
+          "value": "Jinja Example Page" },
+        { "name": "cq:template",
+          "value": "/apps/geometrixx/templates/widepage"},
+        { "name": "cq:tags",
+          "type": "String[]",
+          "value": ["jinja", "python", "migration"] },
+        { "name": "jcr:description",
+          "value": "This is an example page created using Jinja2 with a JSON template." },
+        { "name": "sling:vanityPath",
+          "value": "/connector-examples/json/" }]}
+  ]
+}
