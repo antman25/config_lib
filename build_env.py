@@ -1,6 +1,6 @@
 import logging
 from jinja2 import Environment, FileSystemLoader
-from lib.common import HostName, TagList
+from lib.common import HostName, TagList, HostList
 from lib.util import get_config
 import json
 
@@ -31,7 +31,7 @@ def buildEnvConfig(env_name, scd_data, config_main, config_env, **extra_opts):
     log.info("Building config for %s" % env_name)
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('env.conf.jinja')
-    env_conf = template.render(scd_data=scd_data)
+    env_conf = template.render(scd_data=scd_data, host_data=HostList(scd_data))
     print("Rendered Result:\n%s" % env_conf)
     log.debug(env_conf)
     return json.loads(env_conf)

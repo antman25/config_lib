@@ -19,3 +19,15 @@
         {{ addKey(key_name, input_data[key_name], loop.last) }}
     {%- endfor %}
 {%- endmacro %}
+
+{%- macro buildWindowsMount(hostname, last_val=False) -%}
+    "{{ hostname }}" : {
+        "mount_point" : "/mnt/{{hostname}}/mp"
+    } {%- if not last_val -%} , {% endif %}
+{% endmacro %}
+
+{%- macro buildAllMounts(host_list) -%}
+    {%- for host in host_list -%}
+    {{ buildWindowsMount(host, loop.last) }}
+    {%- endfor %}
+{% endmacro %}

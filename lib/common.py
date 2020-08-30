@@ -26,6 +26,20 @@ class HostName(object):
         return self.__split_host[3]
 
 
+class HostList(object):
+    def __init__(self, scd_data):
+        self.scd_data = scd_data
+
+    def getHostType(self,type_filter):
+        result = list()
+        all_hosts = self.scd_data['hosts']
+        for i in range(len(all_hosts)):
+            cur_host = all_hosts[i]
+            #print(cur_host)
+            if cur_host['os'] == type_filter:
+                result.append(cur_host["hostname"])
+        return result
+
 class TagList(object):
     def __init__(self, initial_values=None):
         self.__tags = {}
