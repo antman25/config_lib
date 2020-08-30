@@ -59,7 +59,7 @@ class TagList(object):
     def __updateTag(self, name, value):
         # check if the value is another tag
         # print ("addTag(%s, %s)" % (name,value))
-        if TagList.__checkValidTagName(value):
+        if isinstance(value,str) and TagList.__checkValidTagName(value):
             # print ("addTag - Value [%s] is a Tag Reference" % value)
             value_tag_name = TagList.__getTagFromRef(value)
             try:

@@ -19,7 +19,7 @@ def buildCommonConfig():
     env = Environment(loader=FileSystemLoader('templates'))
     template = env.get_template('common.conf.jinja')
 
-    common_conf = template.render(linux_tags=common_env)
+    common_conf = template.render(linux_tags=TagList(common_env))
     print ("Rendered Result: %s" % common_conf)
 
     return json.loads(common_conf)

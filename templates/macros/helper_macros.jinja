@@ -1,0 +1,21 @@
+{%- macro addValue(val) %}
+  {%- if val|int -%}
+    {{ val }}
+  {%- else -%}
+    "{{ val }}"
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro addKey(name,val,last_val=False) -%}
+  {%- if last_val == False %}
+    "{{ name }}" : {{ addValue(val) }},
+  {%- else %}
+    "{{ name }}" : {{ addValue(val) }}
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro buildKeyValues(input_data) -%}
+  {%- for key_name in input_data -%}
+    {{ addKey(key_name, input_data[key_name], loop.last) }}
+  {%- endfor %}
+{%- endmacro %}
