@@ -1,4 +1,5 @@
 import logging
+from difflib import get_close_matches
 
 log = logging.getLogger(__name__)
 
@@ -33,85 +34,132 @@ class Tag(object):
 
 class TagList(object):
     def __init__(self, initial_values=None):
+        self.__tags = {}
         if initial_values:
-            self.tags = initial_values
-        else:
-            self.tags = {}
+            for tagName in initial_values:
+                self.addTag(tagName, initial_values[tagName])
+
+    def getAllTagNames(self):
+        return sorted(self.__tags)
+
+    @staticmethod
+    def __checkValidTagName(name):
+        if len(name) < 2:
+            return False
+        first_value_char = name[0]
+        last_value_char = name[-1]
+        if first_value_char == '<' and last_value_char == '>':
+            return True
+        if first_value_char == '<' and last_value_char != '>':
+            return False
+        if first_value_char != '<' and last_value_char == '>':
+            return False
+        return False
+
+    @staticmethod
+    def __getTagFromRef(name):
+        if TagList.__checkValidTagName(name):
+            return name[1:-1]
+        return name
 
     def addTag(self, name, value):
-        first_value_char = value[0]
-        last_value_char = value[-1]
+        # check if the value is another tag
+        # print ("addTag(%s, %s)" % (name,value))
+        if TagList.__checkValidTagName(value):
+            # print ("addTag - Value [%s] is a Tag Reference" % value)
+            value_tag_name = TagList.__getTagFromRef(value)
+            try:
+                test_val = self.__getValue(value_tag_name, [name])
+                # print("addTag - Test Val %s" % str(test_val))
+            except KeyError as ex:
+                print("WARN: Potentially undefined tag - %s" % ex)
 
-        if first_value_char == '<' and last_value_char != '>':
-            raise ValueError("Invalid Value. Tag value - %s" % value)
-        if first_value_char != '<' and last_value_char == '>':
-            raise ValueError("Invalid Value. Tag value - %s" % value)
-
-        if first_value_char == '<':
-            value_tag_name = value[1:-1]
-            self.__resolveValue(value_tag_name)
-
-        if name not in self.tags:
-            self.tags[name] = value
+        if name not in self.__tags:
+            self.__tags[name] = value
         else:
-            raise ValueError("Attempted to add a duplicate tag name %s" % name)
+            raise KeyError("Attempted to add a duplicate tag name %s" % name)
 
-    def __resolveValue(self, tag_name, tree=None):
-        if not tree:
-            tree = list()
-        if tag_name in tree:
-            raise ValueError("I think this might be recursive WOMP WOMP")
-        if tag_name in self.tags:
-            value = self.tags[tag_name]
-            first_value_char = value[0]
-            last_value_char = value[-1]
-
-            if first_value_char == '<' and last_value_char != '>':
-                raise ValueError("Invalid Value. Tag value - %s" % value)
-            if first_value_char != '<' and last_value_char == '>':
-                raise ValueError("Invalid Value. Tag value - %s" % value)
-            if first_value_char == '<':
-                value_tag_name = value[1:-1]
-                tree.append(value_tag_name)
-                print("Tree[%s] = %s" % (tag_name, tree))
-                return self.__resolveValue(value_tag_name,tree)
-            else:
+    def __getValue(self, name, ref_tags=None, max_depth=0):
+        # Check for circular references
+        if name in ref_tags:
+            raise RecursionError(
+                "Tag %s has circular references. Tag Chain: %s" % (name, ' -> '.join(ref_tags + [name])))
+        # Tag Exists
+        if name in self.__tags:
+            value = self.__tags[name]
+            if max_depth == len(ref_tags):
                 return value
-
-        else:
-            raise ValueError(
-                "Attempted to access undefined tag %s. All defined tags: %s" % (tag_name, sorted(self.tags)))
-
-    def getValue(self, tag_name, follow_ref=False):
-        if tag_name in self.tags:
-            if not follow_ref:
-                return self.tags[tag_name]
             else:
-                return self.__resolveValue(tag_name)
+                # Value is a Tag Reference
+                if TagList.__checkValidTagName(value):
+                    value_tag_name = TagList.__getTagFromRef(value)
+                    return self.__getValue(value_tag_name, ref_tags + [name])
+                else:
+                    return value
         else:
-            raise ValueError("Attempted to access undefined tag %s. \
-                              All defined tags: %s" % (tag_name, sorted(self.tags)))
+            close_tags = get_close_matches(name, self.getAllTagNames())
+            error = "Attempted to access undefined tag %s. " % name
+            if len(close_tags) > 0:
+                error += "Possible matches: %s" % close_tags
+            else:
+                error += "All known tags: %s" % sorted(self.__tags)
+                raise KeyError(error)
+
+    def getValue(self, name, follow_ref=False):
+        if follow_ref:
+            return self.__getValue(name, [], -1)
+        return self.__getValue(name, [])
 
     def __repr__(self):
         result = ""
-        for tag_name in self.tags:
-            result += "<%s> = %s\n" % (tag_name, self.tags[tag_name])
+        for name in self.__tags:
+            result += "<%s> = %s\n" % (name, self.__tags[name])
         return result
+
+    def __getitem__(self, name):
+        return self.__getValue(name, [])
 
 
 if __name__ == '__main__':
-    start_val = dict(TAG1='Val1', TAG2='<TAG1>')
+    start_val = dict(CoolTag='CoolVal',
+                     TAG2='<TAG1>',
+                     TAG1='ASDF',
+                     BootLeg='Aasdfsdfff',
+                     Turtle='asdffff',
+                     TAGA='<TAGB>',
+                     TAGB='<TAGC>',
+                     TAGC='FFFF')
+
     tags = TagList(start_val)
-    tags.addTag("TAG3", "Val3")
-    tags.addTag("TAG5", "VAL")
-    tags.addTag("TAG4", "<TAG5>")
+    tags.addTag("TAG3", "<TAGA>")
+    # tags.addTag("TAG5", "VAL")
+    # tags.addTag("TAG4", "<TAG5>")
+    # tags.addTag("TAG5", "<TAG4>")
 
-    tags.addTag("TAG5", "VALAAA")
-    print(tags)
+    # tags.addTag("TAG5", "VALAAA")
+    # print(tags)
 
-    #print("TAG3 = %s" % tags.getValue("TAG3", False))
-    #print("TAG4 = %s" % tags.getValue("TAG4", False))
-    #print("TAG4 = %s" % tags.getValue("TAG4", True))
+    print("Accessing TAG3 = %s" % tags["TAGA"])
+    print("Accessing TAG2 = %s" % tags.getValue("TAGA", False))
+'''
+    all_tags = tags.getAllTagNames()
+    # print(all_tags)
+    print("-----------")
+    for tag_name in all_tags:
+        # print(tag_name)
+        # print(tags[tag_name])
+        print("Tag[%s] = %s" % (tag_name, tags[tag_name]))
+    print("-----------")
+    for tag_name in all_tags:
+        # print(tag_name)
+        # print(tags[tag_name])
+        print("Tag[%s] = %s" % (tag_name, tags.getValue(tag_name, True)))
+
+    # print(tags["TAg5"])
+
+    # print("TAG3 = %s" % tags.getValue("TAG3", False))
+    # print("TAG4 = %s" % tags.getValue("TAG4", False))
+'''
 
 '''
 def build_artifactory_connection(env_name, scd, config_main, config_env, **env_opts):
