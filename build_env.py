@@ -37,7 +37,7 @@ class TagList(object):
         self.__tags = {}
         if initial_values:
             for tagName in initial_values:
-                self.addTag(tagName, initial_values[tagName])
+                self.__updateTag(tagName, initial_values[tagName])
 
     def getAllTagNames(self):
         return sorted(self.__tags)
@@ -62,7 +62,7 @@ class TagList(object):
             return name[1:-1]
         return name
 
-    def addTag(self, name, value):
+    def __updateTag(self, name, value):
         # check if the value is another tag
         # print ("addTag(%s, %s)" % (name,value))
         if TagList.__checkValidTagName(value):
@@ -77,7 +77,9 @@ class TagList(object):
         if name not in self.__tags:
             self.__tags[name] = value
         else:
-            raise KeyError("Attempted to add a duplicate tag name %s" % name)
+            old_value = self.__tags[name]
+            print("WARN: Updating the value of tag %s. Prev Val: %s -- New Val: %s" % (name, old_value, value))
+            self.__tags[name] = value
 
     def __getValue(self, name, ref_tags=None, max_depth=0):
         # Check for circular references
@@ -119,6 +121,12 @@ class TagList(object):
     def __getitem__(self, name):
         return self.__getValue(name, [])
 
+    def __setitem__(self, key, value):
+        self.__updateTag(key,value)
+
+    def __iter__(self):
+        return self.__tags.__iter__()
+
 
 if __name__ == '__main__':
     start_val = dict(CoolTag='CoolVal',
@@ -131,18 +139,13 @@ if __name__ == '__main__':
                      TAGC='FFFF')
 
     tags = TagList(start_val)
-    tags.addTag("TAG3", "<TAGA>")
-    # tags.addTag("TAG5", "VAL")
-    # tags.addTag("TAG4", "<TAG5>")
-    # tags.addTag("TAG5", "<TAG4>")
-
-    # tags.addTag("TAG5", "VALAAA")
-    # print(tags)
-
+    tags["TAGC"] = "<TAG!A>"
+    tags["TAGDDDD"] = "<TAGA>"
     print("Accessing TAG3 = %s" % tags["TAGA"])
     print("Accessing TAG2 = %s" % tags.getValue("TAGA", False))
-'''
+
     all_tags = tags.getAllTagNames()
+
     # print(all_tags)
     print("-----------")
     for tag_name in all_tags:
@@ -154,64 +157,12 @@ if __name__ == '__main__':
         # print(tag_name)
         # print(tags[tag_name])
         print("Tag[%s] = %s" % (tag_name, tags.getValue(tag_name, True)))
+    print("-----------")
+    for tag_name in tags:
+        print("Tag[%s] = %s" % (tag_name,tags[tag_name]))
 
     # print(tags["TAg5"])
 
     # print("TAG3 = %s" % tags.getValue("TAG3", False))
     # print("TAG4 = %s" % tags.getValue("TAG4", False))
-'''
 
-'''
-def build_artifactory_connection(env_name, scd, config_main, config_env, **env_opts):
-    host = config_main.ARTIFACTORY_HOST
-    port = config_main.ARTIFACTORY_PORT
-    if env_name in ['Env1']:
-        port = "8444"
-    return {'host': host,
-            'port': port
-            }
-
-
-def buildHostGroup(scd, host_type):
-    result = []
-    for cur_host in scd.hosts:
-        if cur_host.os == host_type:
-            h = HostName(cur_host.hostname)
-            if h.host_type not in result:
-                result.append(h.host_type)
-    return result
-
-
-def buildHost(scd, host_type):
-    result = []
-    for cur_host in scd.hosts:
-        if cur_host.os == host_type:
-            h = HostName(cur_host.hostname)
-            result.append({h.host_type + h.host_id: cur_host})
-    return result
-
-
-def buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts):
-    result = AttributeDict()
-    result['host_groups'] = buildHostGroup(scd, 'windows')
-    result['hosts'] = buildHost(scd, 'windows')
-    return result
-
-
-def buildLinuxConfig(env_name, scd, config_main, config_env, **env_opts):
-    result = AttributeDict()
-    result['host_groups'] = buildHostGroup(scd, 'linux')
-    result['hosts'] = buildHost(scd, 'linux')
-    return result
-
-
-def buildEnvConfig(env_name, scd, config_main, config_env, **env_opts):
-    result = AttributeDict()
-    result['env_name'] = env_name
-
-    result['artifactory'] = build_artifactory_connection(env_name, scd, config_main, config_env, **env_opts)
-
-    result['linux'] = buildLinuxConfig(env_name, scd, config_main, config_env, **env_opts)
-    result['windows'] = buildWindowsConfig(env_name, scd, config_main, config_env, **env_opts)
-    return result
-'''
