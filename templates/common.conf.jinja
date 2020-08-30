@@ -1,0 +1,10 @@
+{% extends "base.jinja" %}
+{% block tags %}
+  {%- for tag_name in linux_tags %}
+    {%- if not loop.last %}
+      "{{ tag_name }}" : "{{linux_tags[tag_name]}}",
+    {%- else %}
+      "{{ tag_name }}" : "{{linux_tags[tag_name]}}"
+    {%- endif %}
+  {%- endfor %}
+{% endblock%}

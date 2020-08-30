@@ -3,19 +3,19 @@ import time
 
 CURRENT_TIME = time.strftime("%Y%m%d-%H%M%S")
 
-DATA_DIR = '.'
+DATA_DIR = './'
 
-LOG_DIR = DATA_DIR + '/logs'
+LOG_DIR = DATA_DIR + 'logs/'
 
-REPORT_DIR = DATA_DIR + '/reports'
+REPORT_DIR = DATA_DIR + 'reports/'
 
-CFG_DATA_DIR = DATA_DIR + '/cfg'
-SCD_DATA_DIR = DATA_DIR + '/scd'
-PORTS_DATA_DIR = DATA_DIR + '/ports'
-PASSWORDS_DATA_DIR = DATA_DIR + '/passwords'
+CFG_DATA_DIR = DATA_DIR + 'cfg/'
+SCD_DATA_DIR = DATA_DIR + 'scd/'
+PORTS_DATA_DIR = DATA_DIR + 'ports/'
+PASSWORDS_DATA_DIR = DATA_DIR + 'passwords/'
 
-BASELINE_DIR = '/baseline'
-TEST_DIR =  '/test'
+BASELINE_DIR = 'baseline/'
+TEST_DIR = 'test/'
 
 CFG_BASELINE_DIR = CFG_DATA_DIR + BASELINE_DIR
 CFG_TEST_DIR = CFG_DATA_DIR + TEST_DIR

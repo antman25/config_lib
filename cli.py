@@ -115,6 +115,10 @@ def main():
         #log.debug("Loaded SCD Baseline: %s" % str(scd_baseline))
         #log.debug("Loaded SCD Test: %s" % str(scd_test))
 
+        common_conf = build_env.buildCommonConfig()
+
+        util.save_config(config_main.CFG_TEST_DIR + 'common.conf', common_conf)
+
         for env_name in config_env.ENV_LIST_ALL:
             env_opts = config_env.ENV_LIST_ALL[env_name]
             c = build_env.buildEnvConfig(env_name, scd_baseline[env_name], config_main, config_env, **env_opts)

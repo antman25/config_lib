@@ -1,5 +1,5 @@
 {
-  "APP_A_PATH" : "/APP/A/PATH",
-  "APP_B_PATH" : "/APP/B/PATH",
-  "APP_C_PATH" : "/APP/C/PATH"
+  "APP_A_PATH" : "/app/A/path",
+  "APP_B_PATH" : "/app/B/path",
+  "APP_C_PATH" : "/app/C/path"
 }
