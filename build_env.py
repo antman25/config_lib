@@ -69,16 +69,16 @@ class TagList(object):
             # print ("addTag - Value [%s] is a Tag Reference" % value)
             value_tag_name = TagList.__getTagFromRef(value)
             try:
-                test_val = self.__getValue(value_tag_name, [name])
+                self.__getValue(value_tag_name, [name])
                 # print("addTag - Test Val %s" % str(test_val))
             except KeyError as ex:
-                print("WARN: Potentially undefined tag - %s" % ex)
+                log.warning("WARN: Potentially undefined tag - %s" % ex)
 
         if name not in self.__tags:
             self.__tags[name] = value
         else:
             old_value = self.__tags[name]
-            print("WARN: Updating the value of tag %s. Prev Val: %s -- New Val: %s" % (name, old_value, value))
+            log.warning("WARN: Updating the value of tag %s. Prev Val: %s -- New Val: %s" % (name, old_value, value))
             self.__tags[name] = value
 
     def __getValue(self, name, ref_tags=None, max_depth=0):
@@ -122,7 +122,7 @@ class TagList(object):
         return self.__getValue(name, [])
 
     def __setitem__(self, key, value):
-        self.__updateTag(key,value)
+        self.__updateTag(key, value)
 
     def __iter__(self):
         return self.__tags.__iter__()
@@ -159,10 +159,9 @@ if __name__ == '__main__':
         print("Tag[%s] = %s" % (tag_name, tags.getValue(tag_name, True)))
     print("-----------")
     for tag_name in tags:
-        print("Tag[%s] = %s" % (tag_name,tags[tag_name]))
+        print("Tag[%s] = %s" % (tag_name, tags[tag_name]))
 
     # print(tags["TAg5"])
 
     # print("TAG3 = %s" % tags.getValue("TAG3", False))
     # print("TAG4 = %s" % tags.getValue("TAG4", False))
-
