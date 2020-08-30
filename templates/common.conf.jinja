@@ -1,7 +1,14 @@
 {% extends "base.jinja" %}
 {% import 'macros/helper_macros.jinja' as helpers %}
+{% import 'macros/artifactory_connection.jinja' as art %}
 
-{%- block tags -%}
+{%- block artifactory -%}
+  {{ art.buildArtifactoryConn('10.0.0.111',8443,"MyCoolPassword") }}
+{% endblock%}
+
+{%- block linux_tags -%}
   {{ helpers.buildKeyValues(linux_tags) }}
 {% endblock %}
+
+
 

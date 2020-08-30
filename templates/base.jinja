@@ -1,6 +1,11 @@
 {
   "artifactory" : { {%- block artifactory %}{% endblock %} },
   "linux" : {
-    "tags" : { {%- block tags %}{% endblock %} }
+    "tags" :   { {%- block linux_tags %}{% endblock %} },
+    "deploy" : { {%- block linux_deploy %}{% endblock %} }
+  },
+  "windows" : {
+    "tags" :   { {%- block windows_tags %}{% endblock %} },
+    "deploy" : { {%- block windows_deploy %}{% endblock %} }
   }
 }
