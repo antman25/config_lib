@@ -1,11 +1,24 @@
 {
-  "artifactory" : { {%- block artifactory %}{% endblock %} },
-  "linux" : {
-    "tags" :   { {%- block linux_tags %}{% endblock %} },
-    "deploy" : { {%- block linux_deploy %}{% endblock %} }
-  },
-  "windows" : {
-    "tags" :   { {%- block windows_tags %}{% endblock %} },
-    "deploy" : { {%- block windows_deploy %}{% endblock %} }
-  }
+    {%- block base_content -%}
+        {# Define artifactory connection #}
+        {%- block artifactory -%}{% endblock %}
+        {%- block linux_section -%}
+        "linux" :
+        {
+            "tags" :
+            {
+                {%- block linux_tags -%}{% endblock %}
+            }
+        },
+        {% endblock %}
+        {%- block windows_section -%}
+        "windows" :
+        {
+            "tags" :
+            {
+                {%- block windows_tags -%}{% endblock %}
+            }
+        }
+        {% endblock %}
+    {% endblock %}
 }

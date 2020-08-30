@@ -2,13 +2,21 @@
 {% import 'macros/helper_macros.jinja' as helpers %}
 {% import 'macros/artifactory_connection.jinja' as art %}
 
-{%- block artifactory -%}
-  {{ art.buildArtifactoryConn('10.0.0.111',8443,"MyCoolPassword") }}
-{% endblock%}
 
-{%- block linux_tags -%}
-  {{ helpers.buildKeyValues(linux_tags) }}
-{% endblock %}
 
+{
+    {%- block artifactory -%}
+        {{ art.buildArtifactoryConn('10.0.0.111',8443,"MyCoolPassword") }},
+    {% endblock%}
+
+    {%- block linux_tags -%}
+        {{ helpers.buildKeyValues(linux_tags) }}
+    {% endblock %}
+
+    {%- block windows_tags -%}
+        {{ helpers.buildKeyValues(windows_tags) }}
+    {% endblock %}
+
+}
 
 
