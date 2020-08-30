@@ -1,0 +1,11 @@
+{
+  "APP_A_PORT1" : 1001,
+  "APP_A_PORT2" : 1002,
+  "APP_A_PORT3" : 1003,
+  "APP_B_PORT1" : 2001,
+  "APP_B_PORT2" : 2002,
+  "APP_B_PORT3" : 2003,
+  "APP_C_PORT1" : 3001,
+  "APP_C_PORT2" : 3002,
+  "APP_C_PORT3" : 3003
+}
