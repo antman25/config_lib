@@ -1,4 +1,4 @@
-from util import combineAttributes
+from lib.util import combineAttributes
 from lib.AttributeDict import AttributeDict
 
 ENV_TYPE_KEY = 'env_type'

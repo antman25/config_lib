@@ -5,14 +5,12 @@ import sys
 from os import path, getcwd, makedirs
 from shutil import copyfile
 
-
-import logs
-import util
+from lib import logs, util
 import report
 import build_env
 import build_scd
 
-from logs import root_logger
+from lib.logs import root_logger
 from lib.AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)

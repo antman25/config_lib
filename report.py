@@ -1,6 +1,5 @@
 import logging
 import collections
-import util
 
 log = logging.getLogger(__name__)
 

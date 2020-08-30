@@ -1,4 +1,4 @@
-from util import combineAttributes
+from lib.util import combineAttributes
 
 APP1_DEFAULT_PORTS = { 'APP1_PORT1' : '7101',
 		       'APP1_PORT2' : '7102',
