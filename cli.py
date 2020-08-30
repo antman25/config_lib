@@ -1,10 +1,8 @@
 #!/usr/bin/python3 
 import argparse
 import logging
-import os
 import sys
-from os import path, sep, getcwd, access, W_OK, makedirs
-from pathlib import Path
+from os import path, getcwd, makedirs
 from shutil import copyfile
 
 
@@ -15,7 +13,7 @@ import build_env
 import build_scd
 
 from logs import root_logger
-from AttributeDict import AttributeDict
+from lib.AttributeDict import AttributeDict
 
 log = logging.getLogger(__name__)
 

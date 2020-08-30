@@ -1,5 +1,5 @@
 from util import combineAttributes
-from AttributeDict import AttributeDict
+from lib.AttributeDict import AttributeDict
 
 ENV_TYPE_KEY = 'env_type'
 ENV_TYPE_DEV_VALUE = 'dev'
