@@ -137,7 +137,7 @@ def main():
         log.info("Building Fake SCD files")
         i = 0
         for env_name in config_env.ENV_LIST_ALL:
-            fake_scd = build_scd.buildFakeSCD(env_name, i)
+            fake_scd = build_scd.build_fake_scd(env_name, i)
             i = i + 2
             util.save_config(config_main.SCD_TEST_DIR + '/' + env_name + '/data.json', fake_scd)
 
