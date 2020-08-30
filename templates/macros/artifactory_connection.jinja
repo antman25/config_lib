@@ -1,9 +1,9 @@
-{%- macro buildArtifactoryConn(host,port,password) -%}
-    "artifactory" : {
+{% macro buildArtifactoryConn(host,port,password) %}
+    "artifactory" :
+    {
         "host" : "{{ host }}",
         "port" : {{ port }},
         "password" : "{{ password }}",
         "service" : "https",
         "path" : "/artifactory"
-    }
-{%- endmacro %}
+    }{% endmacro %}

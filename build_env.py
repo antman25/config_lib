@@ -18,7 +18,10 @@ def buildCommonConfig():
 
     log.debug("Common Tags: %s" % common_env)
 
-    env = Environment(loader=FileSystemLoader('templates'))
+    env = Environment(loader=FileSystemLoader('templates'), trim_blocks=True,lstrip_blocks=True)
+    env.filters['jsonify'] = json.dumps
+
+
     template = env.get_template('common.conf.jinja')
 
     common_conf = template.render(linux_tags=TagList(common_env), windows_tags=TagList(windows_tags))
@@ -29,9 +32,10 @@ def buildCommonConfig():
 
 def buildEnvConfig(env_name, scd_data, config_main, config_env, **extra_opts):
     log.info("Building config for %s" % env_name)
-    env = Environment(loader=FileSystemLoader('templates'))
+    env = Environment(loader=FileSystemLoader('templates'), trim_blocks=True,lstrip_blocks=True)
+    env.filters['jsonify'] = json.dumps
+
     template = env.get_template('env.conf.jinja')
     env_conf = template.render(scd_data=scd_data, host_data=HostList(scd_data))
-    print("Rendered Result:\n%s" % env_conf)
-    log.debug(env_conf)
+    #log.debug("Rendered Result:\n%s" % env_conf)
     return json.loads(env_conf)

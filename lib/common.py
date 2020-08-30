@@ -40,6 +40,15 @@ class HostList(object):
                 result.append(cur_host["hostname"])
         return result
 
+    def getSmallEnv(self):
+        return ['Env2']
+
+    def isSmallEnv(self, env_name):
+        small_envs = ['Env2', 'Env3']
+        if env_name in small_envs:
+            return True
+        return False
+
 class TagList(object):
     def __init__(self, initial_values=None):
         self.__tags = {}

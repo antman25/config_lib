@@ -1,33 +1,30 @@
-{%- macro addValue(val) %}
-      {%- if val|int -%}
-        {{ val }}
+{%- macro addValue(val,last_val=False) -%}
+    {%- if val|int -%}
+        {{ val }}{% if not last_val %},{%- endif -%}
     {%- else -%}
-        "{{ val }}"
-    {%- endif %}
-{%- endmacro %}
+        "{{ val }}"{% if not last_val %},{%- endif -%}
+    {%- endif -%}
+{%- endmacro -%}
 
 {%- macro addKey(name,val,last_val=False) -%}
-    {%- if last_val == False %}
-        "{{ name }}" : {{ addValue(val) }},
-    {%- else %}
-        "{{ name }}" : {{ addValue(val) }}
-    {%- endif %}
-{%- endmacro %}
-
-{%- macro buildKeyValues(input_data) -%}
-    {%- for key_name in input_data -%}
-        {{ addKey(key_name, input_data[key_name], loop.last) }}
-    {%- endfor %}
-{%- endmacro %}
-
-{%- macro buildWindowsMount(hostname, last_val=False) -%}
-    "{{ hostname }}" : {
-        "mount_point" : "/mnt/{{hostname}}/mp"
-    } {%- if not last_val -%} , {% endif %}
+    "{{ name }}" : {{ addValue(val, last_val) }}
 {% endmacro %}
 
-{%- macro buildAllMounts(host_list) -%}
-    {%- for host in host_list -%}
-    {{ buildWindowsMount(host, loop.last) }}
+{%- macro buildKeyValues(input_data) -%}
+    {% for key_name in input_data %}
+            {{ addKey(key_name, input_data[key_name], loop.last) }}
     {%- endfor %}
+{% endmacro %}
+
+{% macro buildWindowsMount(hostname, last_val=False) %}
+"{{ hostname }}" :
+{
+"mount_point" : "/mnt/{{hostname}}/mp"
+} {%- if not last_val -%} , {% endif %}
+{% endmacro %}
+
+{% macro buildAllMounts(host_list) %}
+{% for host in host_list %}
+{{ buildWindowsMount(host, loop.last) }}
+{% endfor %}
 {% endmacro %}
