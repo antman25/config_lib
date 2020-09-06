@@ -1,13 +1,16 @@
 {
-{% block base_content %}
-{# Define artifactory connection #}
-    {% block artifactory %}{% endblock %}
-    "linux" :
-    {
-        {% block linux_section %}
-        "tags" :
+    {% block base_content %}
+        {# Define artifactory connection #}
+        {% block artifactory %}{% endblock %}
+        {#
+        "linux" :
         {
-            {% block linux_tags %}{% endblock %}
-        }
-    }{% endblock %}
-}{% endblock %}
+            {% block linux_section %}
+            "tags" :
+            {
+                {% block linux_tags %}{% endblock %}
+            }
+        }{% endblock %}
+        #}
+    {% endblock %}
+}
